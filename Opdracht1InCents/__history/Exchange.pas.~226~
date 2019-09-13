@@ -175,11 +175,13 @@ procedure TWisselgeld.UpdateBanknotesAndCoinsInForm(BanknotesAndCoins:
 var
   i: Integer;
 begin
+
   for i := 0 to ComponentCount - 1 do
   begin
-    if Components[i] is TEdit and (Components[i].Tag > 0) then
-      TEdit(Components[i]).Text :=
-        IntToStr(BanknotesAndCoins[Components[i].Tag - 1]);
+    if Components[i] is TEdit then
+      if Components[i].Tag > 0 then
+        TEdit(Components[i]).Text :=
+          IntToStr(BanknotesAndCoins[Components[i].Tag - 1]);
   end;
 end;
 

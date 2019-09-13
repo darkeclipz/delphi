@@ -42758,6 +42758,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange0: TEdit
+    Tag = 1
     Left = 383
     Top = 352
     Width = 41
@@ -42767,6 +42768,7 @@ object Wisselgeld: TWisselgeld
     Text = 'EditChange0'
   end
   object EditChange1: TEdit
+    Tag = 2
     Left = 383
     Top = 296
     Width = 41
@@ -42776,6 +42778,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange2: TEdit
+    Tag = 3
     Left = 383
     Top = 240
     Width = 41
@@ -42785,6 +42788,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange3: TEdit
+    Tag = 4
     Left = 383
     Top = 179
     Width = 41
@@ -42794,6 +42798,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange4: TEdit
+    Tag = 5
     Left = 383
     Top = 131
     Width = 41
@@ -42803,6 +42808,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange5: TEdit
+    Tag = 6
     Left = 383
     Top = 80
     Width = 41
@@ -42812,6 +42818,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange6: TEdit
+    Tag = 7
     Left = 383
     Top = 32
     Width = 41
@@ -42821,6 +42828,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange12: TEdit
+    Tag = 13
     Left = 599
     Top = 48
     Width = 41
@@ -42830,6 +42838,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange11: TEdit
+    Tag = 12
     Left = 599
     Top = 104
     Width = 41
@@ -42839,6 +42848,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange10: TEdit
+    Tag = 11
     Left = 599
     Top = 152
     Width = 41
@@ -42848,6 +42858,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange9: TEdit
+    Tag = 10
     Left = 599
     Top = 215
     Width = 41
@@ -42857,6 +42868,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange8: TEdit
+    Tag = 9
     Left = 599
     Top = 271
     Width = 41
@@ -42866,6 +42878,7 @@ object Wisselgeld: TWisselgeld
     Text = 'Edit1'
   end
   object EditChange7: TEdit
+    Tag = 8
     Left = 599
     Top = 335
     Width = 41

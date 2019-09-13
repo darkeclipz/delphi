@@ -4,13 +4,14 @@ object Wisselgeld: TWisselgeld
   Caption = 'Wisselgeld'
   ClientHeight = 413
   ClientWidth = 681
-  Color = clBtnFace
+  Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TImage
@@ -42713,23 +42714,24 @@ object Wisselgeld: TWisselgeld
     Height = 13
     Caption = 'Terug:'
   end
-  object Edit1: TEdit
+  object EditTotal: TEdit
     Left = 112
     Top = 21
     Width = 105
     Height = 21
     TabOrder = 0
-    Text = 'Edit1'
+    Text = 'EditTotal'
   end
-  object CalculateChange: TButton
+  object TryCalculateChange: TButton
     Left = 24
     Top = 88
     Width = 193
     Height = 73
     Caption = 'Bereken wisselgeld'
     TabOrder = 1
+    OnClick = TryCalculateChangeClick
   end
-  object Edit2: TEdit
+  object EditPaid: TEdit
     Left = 112
     Top = 48
     Width = 105
@@ -42744,13 +42746,132 @@ object Wisselgeld: TWisselgeld
     Height = 34
     Caption = 'Resetten'
     TabOrder = 3
+    OnClick = ResetFormClick
   end
-  object Edit3: TEdit
+  object EditChange: TEdit
     Left = 112
     Top = 176
     Width = 105
     Height = 21
+    ReadOnly = True
     TabOrder = 4
+    Text = 'Edit1'
+  end
+  object EditChange0: TEdit
+    Left = 383
+    Top = 352
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 5
+    Text = 'EditChange0'
+  end
+  object EditChange1: TEdit
+    Left = 383
+    Top = 296
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 6
+    Text = 'Edit1'
+  end
+  object EditChange2: TEdit
+    Left = 383
+    Top = 240
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 7
+    Text = 'Edit1'
+  end
+  object EditChange3: TEdit
+    Left = 383
+    Top = 179
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 8
+    Text = 'Edit1'
+  end
+  object EditChange4: TEdit
+    Left = 383
+    Top = 131
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 9
+    Text = 'Edit1'
+  end
+  object EditChange5: TEdit
+    Left = 383
+    Top = 80
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 10
+    Text = 'Edit1'
+  end
+  object EditChange6: TEdit
+    Left = 383
+    Top = 32
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 11
+    Text = 'Edit1'
+  end
+  object EditChange12: TEdit
+    Left = 599
+    Top = 48
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 12
+    Text = 'Edit1'
+  end
+  object EditChange11: TEdit
+    Left = 599
+    Top = 104
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 13
+    Text = 'Edit1'
+  end
+  object EditChange10: TEdit
+    Left = 599
+    Top = 152
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 14
+    Text = 'Edit1'
+  end
+  object EditChange9: TEdit
+    Left = 599
+    Top = 215
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 15
+    Text = 'Edit1'
+  end
+  object EditChange8: TEdit
+    Left = 599
+    Top = 271
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 16
+    Text = 'Edit1'
+  end
+  object EditChange7: TEdit
+    Left = 599
+    Top = 335
+    Width = 41
+    Height = 21
+    ReadOnly = True
+    TabOrder = 17
     Text = 'Edit1'
   end
 end

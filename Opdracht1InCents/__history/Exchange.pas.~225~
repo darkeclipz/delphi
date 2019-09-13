@@ -172,15 +172,20 @@ end;
 
 procedure TWisselgeld.UpdateBanknotesAndCoinsInForm(BanknotesAndCoins:
   TSpareChange);
-var
-  i: Integer;
 begin
-  for i := 0 to ComponentCount - 1 do
-  begin
-    if Components[i] is TEdit and (Components[i].Tag > 0) then
-      TEdit(Components[i]).Text :=
-        IntToStr(BanknotesAndCoins[Components[i].Tag - 1]);
-  end;
+  EditChange0.Text := IntToStr(BanknotesAndCoins[0]);
+  EditChange1.Text := IntToStr(BanknotesAndCoins[1]);
+  EditChange2.Text := IntToStr(BanknotesAndCoins[2]);
+  EditChange3.Text := IntToStr(BanknotesAndCoins[3]);
+  EditChange4.Text := IntToStr(BanknotesAndCoins[4]);
+  EditChange5.Text := IntToStr(BanknotesAndCoins[5]);
+  EditChange6.Text := IntToStr(BanknotesAndCoins[6]);
+  EditChange7.Text := IntToStr(BanknotesAndCoins[7]);
+  EditChange8.Text := IntToStr(BanknotesAndCoins[8]);
+  EditChange9.Text := IntToStr(BanknotesAndCoins[9]);
+  EditChange10.Text := IntToStr(BanknotesAndCoins[10]);
+  EditChange11.Text := IntToStr(BanknotesAndCoins[11]);
+  EditChange12.Text := IntToStr(BanknotesAndCoins[12]);
 end;
 
 end.
