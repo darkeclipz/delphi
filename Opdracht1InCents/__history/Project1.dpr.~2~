@@ -1,0 +1,14 @@
+﻿program Project1;
+
+uses
+  Vcl.Forms,
+  Exchange in 'Exchange.pas' {Wisselgeld};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TExchange, Wisselgeld);
+  Application.Run;
+end.
