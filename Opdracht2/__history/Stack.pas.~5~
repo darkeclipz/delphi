@@ -1,0 +1,52 @@
+unit Stack;
+
+interface
+
+const MaxStackSize = 100;
+
+type
+  StackElement = Char;
+
+  TStack = class
+  private
+      top: 0..MaxStackSize;
+      element: array[1..MaxStackSize] of StackElement;
+  public
+      procedure initieer;
+      procedure push (x: StackElement);
+      procedure pop (var x: StackElement);
+      function leeg: boolean;
+      function vol: boolean;
+  end;
+
+implementation
+
+procedure TStack.push (x: StackElement);
+begin
+if top < MaxStackSize then
+  begin
+    Inc(top);
+    element[top] := x
+  end
+end;
+
+procedure TStack.pop (var x: StackElement);
+begin if top>0 then
+      begin x:=element[top];
+            dec(top)
+      end
+end;
+
+function TStack.Leeg: boolean;
+begin result:= (top=0)
+end;
+
+function TStack.Vol: boolean;
+begin result := (top=MaxStackSize)
+end;
+
+procedure TStack.initieer;
+begin top:=0
+end;
+
+end.

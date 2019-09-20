@@ -1,0 +1,55 @@
+unit Stack;
+
+interface
+
+const MaxStackSize = 100;
+
+type
+  StackElement = Char;
+  TStack = class
+  private
+      Index: 0..MaxStackSize;
+      Stack: array[1..MaxStackSize] of StackElement;
+  public
+      procedure Instantiate;
+      procedure Push (x: StackElement);
+      procedure Pop (var x: StackElement);
+      function Clear: boolean;
+      function IsFull: boolean;
+  end;
+
+implementation
+
+procedure TStack.Push (x: StackElement);
+begin
+if Index < MaxStackSize then
+  begin
+    Inc(Index);
+    Stack[Index] := x
+  end
+end;
+
+procedure TStack.Pop (var x: StackElement);
+begin
+  if Index>0 then
+  begin
+    x := Stack[Index];
+    Dec(Index)
+  end
+end;
+
+function TStack.Clear: Boolean;
+begin
+  Result := (Index=0)
+end;
+
+function TStack.IsFull: Boolean;
+begin result := (Index=MaxStackSize)
+end;
+
+procedure TStack.Instantiate;
+begin
+  Index := 0;
+end;
+
+end.

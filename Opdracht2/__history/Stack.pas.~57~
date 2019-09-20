@@ -1,0 +1,68 @@
+unit Stack;
+
+interface
+
+uses SysUtils;
+
+const MaxStackSize = 128;
+
+type
+  StackElement = Char;
+  TStack = class
+  private
+    Index: 0..MaxStackSize;
+    Stack: array[0..MaxStackSize] of StackElement;
+  public
+    procedure Instantiate;
+    procedure Push (Element: StackElement);
+    procedure Clear;
+    function Pop: StackElement;
+    function Peek: StackElement;
+    function IsFull: Boolean;
+    function IsEmpty: Boolean;
+  end;
+
+implementation
+
+procedure TStack.Push (Element: StackElement);
+begin
+  if IsFull then
+    raise Exception.Create('Reached maximum stack size.');
+  Stack[Index] := Element;
+  Inc(Index);
+end;
+
+function TStack.Pop: StackElement;
+begin
+  if IsEmpty then
+    raise Exception.Create('Stack contains no elements.');
+  Dec(Index);
+  Result := Stack[Index];
+end;
+
+function TStack.Peek: StackElement;
+begin
+  Result := Stack[Index - 1];
+end;
+
+procedure TStack.Clear;
+begin
+  Index := 0;
+end;
+
+function TStack.IsFull: Boolean;
+begin
+  Result := (Index + 1 = MaxStackSize);
+end;
+
+function TStack.IsEmpty: Boolean;
+begin
+  Result := (Index = 0);
+end;
+
+procedure TStack.Instantiate;
+begin
+  Clear;
+end;
+
+end.
