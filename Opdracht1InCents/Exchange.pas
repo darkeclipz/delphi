@@ -1,3 +1,4 @@
+{ Rosa de Haan, Lars Rotgers (Opdracht 1) 20-9-2019 }
 unit Exchange;
 
 interface
