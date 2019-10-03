@@ -1,3 +1,4 @@
+{ Rosa de Haan, Lars Rotgers, Opdracht 2, 20-9-2019 }
 unit ParenthesisChecker;
 
 interface
@@ -16,6 +17,7 @@ type
     MemoOutput: TMemo;
     procedure ButtonTryCheckClick(Sender: TObject);
     procedure ButtonEmptyFormClick(Sender: TObject);
+    procedure ButtonEmpyNotificationsClick(Sender: TObject);
   private
     { Private declarations }
     procedure ClearOutput;
@@ -47,6 +49,11 @@ begin
   ClearForm;
 end;
 
+procedure TParenthesisCheckerForm.ButtonEmpyNotificationsClick(Sender: TObject);
+begin
+  ClearOutput;
+end;
+
 procedure TParenthesisCheckerForm.ButtonTryCheckClick(Sender: TObject);
 begin
   try
@@ -68,28 +75,27 @@ begin
   IsInputCorrect := True;
   Stack := TStack.Create;
   Stack.Instantiate;
+
   for i := 1 to Length(EditInput.Text) do { String indexing is 1-based }
   begin
     CurrentChar := EditInput.Text[i];
 
     if not IsParenthesis(CurrentChar) then
-      continue;
+      continue
 
     if Stack.IsEmpty and IsClosingParenthesis(CurrentChar) then
     begin
       IsInputCorrect := False;
       AddLineToOutput('Sluithaakje teveel voor ' + CurrentChar + ' op positie '
         + IntToStr(i) + '.');
-      continue;
     end;
 
     if IsOpeningParenthesis(CurrentChar) then
       Stack.Push(CurrentChar);
 
-    if IsClosingParenthesis(CurrentChar) then
+    if not Stack.IsEmpty and IsClosingParenthesis(CurrentChar) then
     begin
-
-      if not IsMatch(Stack.Peek, CurrentChar) then
+      if IsMatch(Stack.Peek, CurrentChar) then
       begin
         Stack.Pop;
       end
@@ -98,7 +104,7 @@ begin
         IsInputCorrect := False;
         AddLineToOutput('Foutief sluithaakje ' + CurrentChar + ' op positie '
           + IntToStr(i) + '.');
-      end
+      end;
     end;
   end;
 
@@ -107,9 +113,6 @@ begin
     IsInputCorrect := False;
     AddLineToOutput('Geen sluithaakje voor ' + Stack.Pop + '.');
   end;
-
-  if not Stack.IsEmpty then
-    AddLineToOutput('Niet alle haakjes zijn correct gesloten.');
 
   if IsInputCorrect then
     AddLineToOutput('Alle haakjes zijn correct gepaard.');
