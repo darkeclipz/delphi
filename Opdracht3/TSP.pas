@@ -259,7 +259,6 @@ begin
     + Graph[Permutation[0] - 1, Permutation[Length(Permutation) - 1] - 1];
 end;
 
-
 {$R *.dfm}
 
 end.
