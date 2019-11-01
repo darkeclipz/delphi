@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2019-10-16 14:22:01.000.592,=D:\Delphi\Unit1.pas</Transaction>
+    <Transaction>2019-10-16 14:22:20.000.339,D:\Delphi\Unit1.pas=D:\Delphi\Opdracht3\TSP.pas</Transaction>
+    <Transaction>2019-10-16 14:22:20.000.339,D:\Delphi\Unit1.dfm=D:\Delphi\Opdracht3\TSP.dfm</Transaction>
+    <Transaction>2019-10-16 14:22:36.000.012,D:\Delphi\Project1.dproj=D:\Delphi\Opdracht3\Handelsreiziger.dproj</Transaction>
+    <Transaction>2019-10-16 15:35:52.000.843,=D:\Delphi\Opdracht3\Unit1.pas</Transaction>
+    <Transaction>2019-10-16 15:36:02.000.617,D:\Delphi\Opdracht3\Unit1.pas=D:\Delphi\Opdracht3\PermutationGenerator.pas</Transaction>
+  </Transactions>
+</BorlandProject>

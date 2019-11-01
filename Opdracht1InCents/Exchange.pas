@@ -58,6 +58,8 @@ implementation
 
 {$R *.dfm}
 
+
+{ Alle invoer- en uitvoervelden leegmaken. }
 procedure TWisselgeld.ClearInputFieldsInForm;
 var
   i: Integer;
@@ -67,20 +69,30 @@ begin
       TEdit(Components[i]).Clear;
 end;
 
+{ Bij openen van de applicatie alle velden leegmaken. }
 procedure TWisselgeld.FormCreate(Sender: TObject);
 begin
   ClearInputFieldsInForm;
 end;
 
+{ Button handler voor de bereken wisselgeld knop. }
 procedure TWisselgeld.TryCalculateChangeClick(Sender: TObject);
 begin
   try
     CalculateSpareChange;
   except
     on EConvertError do
+    begin
+      { Getal is niet geschreven in de juiste notatie. }
       ShowMessage('Vul een decimaal getal in met puntnotatie.');
+      ClearInputFieldsInForm;
+    end;
     on E : Exception do
+    begin
+      { Elke overige fout ook in een melding tonen. }
       ShowMessage(E.Message);
+      ClearInputFieldsInForm;
+    end;
   end;
 end;
 
@@ -90,13 +102,15 @@ var
   TotalInEuroCents, PaidInEuroCents, SpareChangeInCents: Integer;
   BanknotesAndCoins: TSpareChange;
 begin
+  { Input ophalen en valideren, vervolgens het wisselgeld afronden
+    en bepalen welke briefjes en muntjes er terug moeten. }
   TotalInEuros := StrToFloat(EditTotal.Text);
   PaidInEuros := StrToFloat(EditPaid.Text);
   ValidateDecimal(TotalInEuros);
   ValidateDecimal(PaidInEuros);
   ValidateAmountPaid(TotalInEuros, PaidInEuros);
-  TotalInEuroCents := Trunc(100 * TotalInEuros);
-  PaidInEuroCents := Trunc(100 * PaidInEuros);
+  TotalInEuroCents := Round(100 * TotalInEuros);
+  PaidInEuroCents := Round(100 * PaidInEuros);
   SpareChangeInCents := RoundSpareChange(PaidInEuroCents - TotalInEuroCents);
   BanknotesAndCoins := CalculateBanknotesAndCoins(SpareChangeInCents);
   EditChange.Text := FloatToStr(SpareChangeInCents / 100);
@@ -105,11 +119,14 @@ end;
 
 procedure TWisselgeld.ResetFormClick(Sender: TObject);
 begin
+  { Alle input velden leegmaken }
   ClearInputFieldsInForm;
 end;
 
 procedure TWisselgeld.ValidateDecimal(Value: Real);
 begin
+  { Controleren of een decimaal getal x tussen 0 < x < 1000 ligt. En
+    als dit niet het geval is een foutmelding weergeven. }
   if Value < 0 then
     raise Exception.Create('Getal moet positief zijn.');
   if Value > 1000 then
@@ -118,6 +135,9 @@ end;
 
 procedure TWisselgeld.ValidateAmountPaid(TotalInEuros, PaidInEuros: Real);
 begin
+  { Controleren of het betaalde bedrag meer is of gelijk is aan het
+    het bedrag dat betaald moet worden. Indien dit niet het geval is, een
+    foutmelding weergeven. }
   if PaidInEuros < TotalInEuros then
      raise Exception.Create('Betaalde bedrag moet groter of gelijk zijn aan '
         + 'het totale bedrag.');
@@ -128,15 +148,19 @@ var
   Remainder, RemainderToRoundUp: Integer;
   RoundUp: Boolean;
 begin
+  { Het wisselgeld afronden met intervallen van 5. }
   Remainder := ChangeInCents mod 5;
-  RemainderToRoundUp := 5 - Remainder;
-  RoundUp := Remainder >= 3;
+  RemainderToRoundUp := 5 - Remainder; { Hoeveel er naarboven moet worden
+                                         afgerond. }
+  RoundUp := Remainder >= 3; { Afronden naarboven als het >= 3 is. }
   if RoundUp then
   begin
+    { Het bedrag afronden naarboven. }
     ChangeInCents := ChangeInCents + RemainderToRoundUp;
   end
   else
   begin
+    { Het bedrag afronden naar beneden. }
     ChangeInCents := ChangeInCents - Remainder;
   end;
   Result := ChangeInCents;
@@ -152,19 +176,27 @@ var
   BanknotesAndCoins: TSpareChange;
   i: Integer;
 begin
-  FillChar(BanknotesAndCoins, SizeOf(BanknotesAndCoins), 0);
+  { Bepalen welke briefjes en muntjes moeten worden teruggegeven. }
+  FillChar(BanknotesAndCoins, SizeOf(BanknotesAndCoins), 0); { Array leegmaken }
   i := 0;
   RemainingSpareChange := SpareChangeInCents;
+
+  { Zolang er nog iets moet worden terug betaald. }
   while RemainingSpareChange > 0 do
   begin
+    { Als het rest bedrag groter is dan het huidige briefje/muntje i. }
     if RemainingSpareChange >= BanknotesAndCoinTypes[i] then
     begin
+      { Dit briefje/muntje ophogen met 1. }
       BanknotesAndCoins[i] := BanknotesAndCoins[i] + 1;
+
+      { Dit bedrag van het briefje/muntje van het rest bedrag afhalen. }
       RemainingSpareChange :=
         RemainingSpareChange - BanknotesAndCoinTypes[i];
     end
     else
     begin
+      { Naar het volgende briefje/muntje. }
       i := i + 1;
     end;
   end;
@@ -176,6 +208,8 @@ procedure TWisselgeld.UpdateBanknotesAndCoinsInForm(BanknotesAndCoins:
 var
   i: Integer;
 begin
+  { Alle briefjes/muntjes updaten in de input velden van
+    het formulier. }
   for i := 0 to ComponentCount - 1 do
   begin
     if Components[i] is TEdit and (Components[i].Tag > 0) then

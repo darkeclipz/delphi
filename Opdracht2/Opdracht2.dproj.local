@@ -2,9 +2,9 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019-09-20 14:40:30.000.878,=D:\Delphi\Unit1.pas</Transaction>
-    <Transaction>2019-09-20 14:40:44.000.323,D:\Delphi\Opdracht2\ParenthesisChecker.dfm=D:\Delphi\Unit1.dfm</Transaction>
-    <Transaction>2019-09-20 14:40:44.000.323,D:\Delphi\Opdracht2\ParenthesisChecker.pas=D:\Delphi\Unit1.pas</Transaction>
-    <Transaction>2019-09-20 14:40:52.000.399,D:\Delphi\Opdracht2\Opdracht2.dproj=D:\Delphi\Project1.dproj</Transaction>
+    <Transaction>2019-09-20 14:40:44.000.323,D:\Delphi\Unit1.pas=D:\Delphi\Opdracht2\ParenthesisChecker.pas</Transaction>
+    <Transaction>2019-09-20 14:40:44.000.323,D:\Delphi\Unit1.dfm=D:\Delphi\Opdracht2\ParenthesisChecker.dfm</Transaction>
+    <Transaction>2019-09-20 14:40:52.000.399,D:\Delphi\Project1.dproj=D:\Delphi\Opdracht2\Opdracht2.dproj</Transaction>
     <Transaction>2019-09-20 14:41:19.000.245,=C:\Users\Lars\Downloads\Stack.pas</Transaction>
     <Transaction>2019-09-20 14:41:29.000.556,C:\Users\Lars\Downloads\Stack.pas=</Transaction>
     <Transaction>2019-09-20 14:41:52.000.354,=D:\Delphi\Opdracht2\Stack.pas</Transaction>

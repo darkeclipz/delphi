@@ -1,0 +1,201 @@
+{ Rosa de Haan, Lars Rotgers (Opdracht 1) 20-9-2019 }
+unit Exchange;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls;
+
+type
+  TSpareChange = array[0..12] of Integer;
+  TWisselgeld = class(TForm)
+    Image1: TImage;
+    Image2: TImage;
+    EditTotal: TEdit;
+    Label1: TLabel;
+    TryCalculateChange: TButton;
+    EditPaid: TEdit;
+    Label2: TLabel;
+    ResetForm: TButton;
+    Label3: TLabel;
+    EditChange: TEdit;
+    EditChange0: TEdit;
+    EditChange1: TEdit;
+    EditChange2: TEdit;
+    EditChange3: TEdit;
+    EditChange4: TEdit;
+    EditChange5: TEdit;
+    EditChange6: TEdit;
+    EditChange12: TEdit;
+    EditChange11: TEdit;
+    EditChange10: TEdit;
+    EditChange9: TEdit;
+    EditChange8: TEdit;
+    EditChange7: TEdit;
+    procedure TryCalculateChangeClick(Sender: TObject);
+    procedure ResetFormClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure CalculateSpareChange;
+    procedure ClearInputFieldsInForm();
+    procedure ValidateDecimal(Value: Real);
+    procedure ValidateAmountPaid(TotalInEuros, PaidInEuros: Real);
+    procedure UpdateBanknotesAndCoinsInForm(BanknotesAndCoins: TSpareChange);
+    function RoundSpareChange(ChangeInCents: Integer): Integer;
+    function CalculateBanknotesAndCoins(SpareChangeInCents: Integer): TSpareChange;
+  public
+    { Public declarations }
+  end;
+
+var
+  Wisselgeld: TWisselgeld;
+
+implementation
+
+{$R *.dfm}
+
+
+{ Alle invoer- en uitvoervelden leegmaken. }
+procedure TWisselgeld.ClearInputFieldsInForm;
+var
+  i: Integer;
+begin
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is TEdit then
+      TEdit(Components[i]).Clear;
+end;
+
+{ Bij openen van de applicatie alle velden leegmaken. }
+procedure TWisselgeld.FormCreate(Sender: TObject);
+begin
+  ClearInputFieldsInForm;
+end;
+
+{ Button handler voor de bereken wisselgeld knop. }
+procedure TWisselgeld.TryCalculateChangeClick(Sender: TObject);
+begin
+  try
+    CalculateSpareChange;
+  except
+    on EConvertError do
+    begin
+      { Getal is niet geschreven in de juiste notatie. }
+      ShowMessage('Vul een decimaal getal in met puntnotatie.');
+      ClearInputFieldsInForm;
+    end;
+    on E : Exception do
+    begin
+      { Elke overige fout ook in een melding tonen. }
+      ShowMessage(E.Message);
+      ClearInputFieldsInForm;
+    end;
+  end;
+end;
+
+procedure TWisselgeld.CalculateSpareChange;
+var
+  TotalInEuros, PaidInEuros, ChangeInEuros: Real;
+  TotalInEuroCents, PaidInEuroCents, SpareChangeInCents: Integer;
+  BanknotesAndCoins: TSpareChange;
+begin
+  { Input ophalen en valideren, vervolgens het wisselgeld afronden
+    en bepalen welke briefjes en muntjes er terug moeten. }
+  TotalInEuros := StrToFloat(EditTotal.Text);
+  PaidInEuros := StrToFloat(EditPaid.Text);
+  ValidateDecimal(TotalInEuros);
+  ValidateDecimal(PaidInEuros);
+  ValidateAmountPaid(TotalInEuros, PaidInEuros);
+  TotalInEuroCents := Round(100 * TotalInEuros);
+  PaidInEuroCents := Round(100 * PaidInEuros);
+  SpareChangeInCents := RoundSpareChange(PaidInEuroCents - TotalInEuroCents);
+  BanknotesAndCoins := CalculateBanknotesAndCoins(SpareChangeInCents);
+  EditChange.Text := FloatToStr(SpareChangeInCents / 100);
+  UpdateBanknotesAndCoinsInForm(BanknotesAndCoins);
+end;
+
+procedure TWisselgeld.ResetFormClick(Sender: TObject);
+begin
+  ClearInputFieldsInForm;
+end;
+
+procedure TWisselgeld.ValidateDecimal(Value: Real);
+begin
+  if Value < 0 then
+    raise Exception.Create('Getal moet positief zijn.');
+  if Value > 1000 then
+    raise Exception.Create('Getal moet onder de 1000 zijn.');
+end;
+
+procedure TWisselgeld.ValidateAmountPaid(TotalInEuros, PaidInEuros: Real);
+begin
+  if PaidInEuros < TotalInEuros then
+     raise Exception.Create('Betaalde bedrag moet groter of gelijk zijn aan '
+        + 'het totale bedrag.');
+end;
+
+function TWisselgeld.RoundSpareChange(ChangeInCents: Integer): Integer;
+var
+  Remainder, RemainderToRoundUp: Integer;
+  RoundUp: Boolean;
+begin
+  Remainder := ChangeInCents mod 5;
+  RemainderToRoundUp := 5 - Remainder;
+  RoundUp := Remainder >= 3;
+  if RoundUp then
+  begin
+    ChangeInCents := ChangeInCents + RemainderToRoundUp;
+  end
+  else
+  begin
+    ChangeInCents := ChangeInCents - Remainder;
+  end;
+  Result := ChangeInCents;
+end;
+
+function TWisselgeld.CalculateBanknotesAndCoins(SpareChangeInCents: Integer)
+  : TSpareChange;
+const
+  BanknotesAndCoinTypes: TSpareChange = (50000, 20000, 10000, 5000, 2000, 1000,
+                                         500, 200, 100, 50, 20, 10, 5);
+var
+  RemainingSpareChange: Integer;
+  BanknotesAndCoins: TSpareChange;
+  i: Integer;
+begin
+  FillChar(BanknotesAndCoins, SizeOf(BanknotesAndCoins), 0);
+  i := 0;
+  RemainingSpareChange := SpareChangeInCents;
+  while RemainingSpareChange > 0 do
+  begin
+    if RemainingSpareChange >= BanknotesAndCoinTypes[i] then
+    begin
+      BanknotesAndCoins[i] := BanknotesAndCoins[i] + 1;
+      RemainingSpareChange :=
+        RemainingSpareChange - BanknotesAndCoinTypes[i];
+    end
+    else
+    begin
+      i := i + 1;
+    end;
+  end;
+  Result := BanknotesAndCoins;
+end;
+
+procedure TWisselgeld.UpdateBanknotesAndCoinsInForm(BanknotesAndCoins:
+  TSpareChange);
+var
+  i: Integer;
+begin
+  for i := 0 to ComponentCount - 1 do
+  begin
+    if Components[i] is TEdit and (Components[i].Tag > 0) then
+      TEdit(Components[i]).Text :=
+        IntToStr(BanknotesAndCoins[Components[i].Tag - 1]);
+  end;
+end;
+
+end.
