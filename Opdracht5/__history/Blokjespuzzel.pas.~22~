@@ -1,0 +1,132 @@
+unit Blokjespuzzel;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls;
+
+type
+  TPiece = Array[0..4] of Array[0..4] of Boolean;
+  TGrid = Array[0..8] of Array[0..8] of Integer;
+  TForm1 = class(TForm)
+    ButtonNextSolution: TButton;
+    ButtonStop: TButton;
+    EditSolutions: TEdit;
+    Label1: TLabel;
+    DrawGrid: TDrawGrid;
+    procedure DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    Grid: TGrid;
+    procedure Init;
+  public
+    { Public declarations }
+
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+const
+  Pieces: Array[0..7] of TPiece = (
+    { Z }
+    (
+      (True , True, False, False, False),
+      (True , True, False, False, False),
+      (False, True, True , False, False),
+      (False, True, True , False, False),
+      (False, False, False, False, False)
+    ),
+    { I }
+    (
+      (True , True , True , True , False),
+      (True , True , True , True , False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { L }
+    (
+      (False, False, True , True , False),
+      (False, False, True , True , False),
+      (True , True , True , True , False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { U }
+    (
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { Y }
+    (
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { B }
+    (
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { T }
+    (
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    ),
+    { P }
+    (
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False),
+      (False, False, False, False, False)
+    )
+  );
+  Colors: Array[0..8] of TColor =
+    (clGray, clRed, clBlue, clRed, clRed, clRed, clRed, clRed, clRed);
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  Self.Init;
+end;
+
+procedure TForm1.Init;
+var
+  i, j: Integer;
+begin
+  for i := 0 to 8 do
+    for j := 0 to 8 do
+      if (i = 0) or (i = 8) or (j = 0) or (j = 8) then
+        Self.Grid[i, j] := -1
+      else
+        Self.Grid[i, j] := 0;
+end;
+
+procedure TForm1.DrawGridDrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+begin
+  Beep;
+  DrawGrid.Canvas.Brush.Color := clRed;
+  DrawGrid.Canvas.FillRect(Rect);
+end;
+
+end.
