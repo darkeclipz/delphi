@@ -1,0 +1,59 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Puzzel'
+  ClientHeight = 340
+  ClientWidth = 322
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object LabelTotalSolutions: TLabel
+    Left = 120
+    Top = 22
+    Width = 87
+    Height = 13
+    Alignment = taCenter
+    Caption = 'Oplossing nummer'
+  end
+  object ButtonNext: TButton
+    Left = 24
+    Top = 17
+    Width = 75
+    Height = 25
+    Caption = 'Volgende'
+    TabOrder = 0
+    OnClick = ButtonNextClick
+  end
+  object ButtonExitApplication: TButton
+    Left = 222
+    Top = 17
+    Width = 75
+    Height = 25
+    Caption = 'Einde'
+    TabOrder = 1
+    OnClick = ButtonExitApplicationClick
+  end
+  object DrawGrid: TDrawGrid
+    Left = 24
+    Top = 48
+    Width = 273
+    Height = 273
+    Color = clBtnFace
+    ColCount = 8
+    DefaultColWidth = 32
+    DefaultRowHeight = 32
+    FixedCols = 0
+    RowCount = 8
+    FixedRows = 0
+    ScrollBars = ssNone
+    TabOrder = 2
+    OnDrawCell = DrawGridDrawCell
+  end
+end

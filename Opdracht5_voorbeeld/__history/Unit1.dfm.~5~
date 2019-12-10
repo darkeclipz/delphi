@@ -1,0 +1,73 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Pentomino'
+  ClientHeight = 357
+  ClientWidth = 286
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 313
+    Width = 31
+    Height = 13
+    Caption = 'Label1'
+  end
+  object NextButton: TButton
+    Left = 8
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Volgende'
+    TabOrder = 0
+    OnClick = NextButtonClick
+  end
+  object StopButton: TButton
+    Left = 201
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Stop'
+    TabOrder = 1
+    OnClick = StopButtonClick
+  end
+  object ProgressBar1: TProgressBar
+    Left = 8
+    Top = 332
+    Width = 150
+    Height = 17
+    TabOrder = 2
+  end
+  object DrawGrid1: TDrawGrid
+    Left = 8
+    Top = 39
+    Width = 268
+    Height = 268
+    ColCount = 8
+    DefaultColWidth = 32
+    DefaultRowHeight = 32
+    FixedCols = 0
+    RowCount = 8
+    FixedRows = 0
+    TabOrder = 3
+    OnDrawCell = DrawGrid1DrawCell
+  end
+  object CheckBox1: TCheckBox
+    Left = 179
+    Top = 332
+    Width = 97
+    Height = 17
+    Caption = 'Toon voortgang'
+    Checked = True
+    State = cbChecked
+    TabOrder = 4
+  end
+end
