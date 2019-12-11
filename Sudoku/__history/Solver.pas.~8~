@@ -1,0 +1,101 @@
+﻿unit Solver;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Menus, Vcl.Grids, Vcl.StdCtrls,
+  Vcl.ComCtrls;
+
+type
+  TForm1 = class(TForm)
+    OutputMemo: TMemo;
+    SudokuGrid: TStringGrid;
+    LoadPuzzleButton: TButton;
+    SolveButton: TButton;
+    AnimateCheck: TCheckBox;
+    procedure FormCreate(Sender: TObject);
+    procedure SudokuGridDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure LoadPuzzleButtonClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure Init;
+    procedure Log(msg: String);
+    procedure LoadPuzzle(puzzleString: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  Grid: Array[0..80] of Integer;
+  Squares: Array[0..8] of Array[0..8] of Integer =
+  (
+    (0,  1,  2,  9,  10, 11, 18, 19, 20),    // square 1
+    (3,  4,  5,  12, 13, 14, 21, 22, 23),    // square 2
+    (6,  7,  8,  15, 16, 17, 24, 25, 26),    // square 3
+    (27, 28, 29, 36, 37, 38, 45, 46, 47),    // square 4
+    (30, 31, 32, 39, 40, 41, 48, 49, 50),    // square 5
+    (33, 34, 35, 42, 43, 44, 51, 52, 53),    // square 6
+    (54, 55, 56, 63, 64, 65, 72, 73, 74),    // square 7
+    (57, 58, 59, 66, 67, 68, 75, 76, 77),    // square 8
+    (60, 61, 62, 69, 70, 71, 78, 79, 80)     // square 9
+  );
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  //Init;
+end;
+
+procedure TForm1.Log(msg: String);
+begin
+  OutputMemo.Lines.Append(msg);
+end;
+
+procedure TForm1.Init;
+var i: Integer;
+begin
+  for i := 0 to 81 do
+  begin
+    Log(IntToStr(i));
+    if Grid[i] <> 0 then
+      SudokuGrid.Cells[i mod 9, i div 9] := IntToStr(Grid[i])
+    else
+      SudokuGrid.Cells[i mod 9, i div 9] := '';
+  end;
+end;
+
+procedure TForm1.SudokuGridDrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+begin
+  {if (ACol + ARow) mod 2 = 0 then
+  begin
+    SudokuGrid.Canvas.Brush.Color := clBlack;
+    SudokuGrid.Canvas.FillRect(Rect);
+  end;   }
+end;
+
+procedure TForm1.LoadPuzzle(puzzleString: string);
+var i: Integer;
+begin
+  if puzzleString.Length <> 81 then
+    raise Exception.Create('Invalid puzzle string, it should contain 81 characters.');
+  for i := 0 to 81 do
+    Grid[i] := Ord(puzzleString[i + 1]) - 48;  // 48 is the ASCII code for 0.
+  Log('Puzzle succesfully loaded.');
+end;
+
+procedure TForm1.LoadPuzzleButtonClick(Sender: TObject);
+var ps: String;
+begin
+  ps := InputBox('Load', 'Enter a puzzle string:', '');
+  LoadPuzzle(ps);
+  Init;
+end;
+
+end.
