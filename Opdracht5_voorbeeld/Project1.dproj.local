@@ -2,8 +2,8 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019-12-04 15:43:31.000.137,=D:\Delphi\Unit1.pas</Transaction>
-    <Transaction>2019-12-04 15:46:41.000.322,D:\Delphi\Unit1.pas=D:\Delphi\Opdracht5_voorbeeld\Unit1.pas</Transaction>
-    <Transaction>2019-12-04 15:46:41.000.322,D:\Delphi\Unit1.dfm=D:\Delphi\Opdracht5_voorbeeld\Unit1.dfm</Transaction>
-    <Transaction>2019-12-04 15:46:42.000.831,D:\Delphi\Project1.dproj=D:\Delphi\Opdracht5_voorbeeld\Project1.dproj</Transaction>
+    <Transaction>2019-12-04 15:46:41.000.322,D:\Delphi\Opdracht5_voorbeeld\Unit1.dfm=D:\Delphi\Unit1.dfm</Transaction>
+    <Transaction>2019-12-04 15:46:41.000.322,D:\Delphi\Opdracht5_voorbeeld\Unit1.pas=D:\Delphi\Unit1.pas</Transaction>
+    <Transaction>2019-12-04 15:46:42.000.831,D:\Delphi\Opdracht5_voorbeeld\Project1.dproj=D:\Delphi\Project1.dproj</Transaction>
   </Transactions>
 </BorlandProject>
