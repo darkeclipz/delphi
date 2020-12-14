@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2019-12-10 13:26:06.154,=D:\Delphi\Unit1.pas</Transaction>
-    <Transaction>2019-12-10 13:27:04.286,D:\Delphi\Sudoku\Solver.pas=D:\Delphi\Unit1.pas</Transaction>
-    <Transaction>2019-12-10 13:27:04.286,D:\Delphi\Sudoku\Solver.dfm=D:\Delphi\Unit1.dfm</Transaction>
-    <Transaction>2019-12-10 13:27:07.903,D:\Delphi\Sudoku\Sudoku.dproj=D:\Delphi\Project1.dproj</Transaction>
+	<Transactions>
+    <Transaction>2019-12-10 13:26:06.000.154,=D:\Delphi\Unit1.pas</Transaction>
+    <Transaction>2019-12-10 13:27:04.000.286,D:\Delphi\Unit1.pas=D:\Delphi\Sudoku\Solver.pas</Transaction>
+    <Transaction>2019-12-10 13:27:04.000.286,D:\Delphi\Unit1.dfm=D:\Delphi\Sudoku\Solver.dfm</Transaction>
+    <Transaction>2019-12-10 13:27:07.000.903,D:\Delphi\Project1.dproj=D:\Delphi\Sudoku\Sudoku.dproj</Transaction>
   </Transactions>
 </BorlandProject>

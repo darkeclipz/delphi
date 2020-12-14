@@ -41,6 +41,7 @@ var
   Stop: Bool;
 
 const
+  // Alle indices van de cellen voor een vakje.
   Squares: Array[0..8] of Array[0..8] of Integer =
   (
     (0,  1,  2,  9,  10, 11, 18, 19, 20),    // square 1
@@ -54,6 +55,7 @@ const
     (60, 61, 62, 69, 70, 71, 78, 79, 80)     // square 9
   );
 
+  // Eenvoudige puzzel om mee te testen.
   easy_puzzle: string = '5300700006001950000980000608000600034008'+
                         '03001700020006060000280000419005000080079';
 
@@ -66,18 +68,17 @@ begin
   OutputMemo.Lines.Append(Msg);
 end;
 
+// Zodra de applicatie opstart, alle UI elementen initialiseren.
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   SolveButton.Enabled := False;
-  //LoadPuzzle(easy_puzzle);
   StopButton.Enabled := False;
   Stop := False;
   OutputMemo.Lines.Clear;
   Log('First load a puzzle by clicking load.');
-  //Log('A puzzle string format is used where the entire puzzle is stored as');
-  //Log('a single string with 0 indicating an empty position.');
 end;
 
+// Weergeven van Sudoku in een string grid.
 procedure TForm1.UpdateGrid;
 var i: Integer;
 begin
@@ -90,15 +91,19 @@ begin
   end;
 end;
 
+// Puzzel inladen met het puzzel string formaat.
 procedure TForm1.LoadPuzzle(puzzleString: string);
 var i: Integer;
 begin
+  // Controleren of de puzzel wel de juiste lengte heeft.
   if puzzleString.Length <> 81 then
     raise Exception.Create('Invalid puzzle string, it '+
       'should contain 81 characters.');
+  // Puzzel inladen in Sudoku grid.
   for i := 0 to 80 do
   begin
     Grid[i] := Ord(puzzleString[i + 1]) - 48;  // 48 is the ASCII code for 0.
+    // Controleren of de waarde van de cel wel 1..9 is.
     if (Grid[i] < 0) or (Grid[i] > 9) then
       raise Exception.Create('Grid can only contain values of 0..9, ' +
         ' error at cell ' + IntToStr(i+1) + '.');
@@ -108,32 +113,41 @@ begin
   Log('Puzzle succesfully loaded.');
 end;
 
+// Button waarmee een puzzel kan worden ingeladen.
 procedure TForm1.LoadPuzzleButtonClick(Sender: TObject);
 var puzzle: String;
+var filePath: String;
 begin
   try
-
-    ShowMessage(ReadFile('test.sudo'));
-    Exit;
-
-    puzzle := InputBox('Load', 'Enter a puzzle string:', '');
-    if puzzle.Length > 0 then
-      LoadPuzzle(puzzle);
+    filePath := SelectFile();
+    if filePath.Length > 0 then
+    begin
+      puzzle := ReadFile(filePath);
+      if puzzle.Length > 0 then  // controleren of er wel invoer is
+        LoadPuzzle(puzzle);
+    end;
   except on E: Exception do
     Log(E.Message);
   end;
 end;
 
+// Met deze functie wordt een rij gecontroleerd op unieke getallen. Voor
+// elke cel in de rij wordt er gekeken welk getal al is voorgekomen. Als
+// een getal meerdere keren voorkomt dan is de rij ongeldig.
 function TForm1.IsValidRow(RowIndex: Integer): Bool;
 var
   i: Integer;
-  digits: array[0..9] of Bool;
+  digits: array[0..9] of Bool; // Houdt bij welk getal al is voorgekomen.
 begin
   Result := True;
   for i := 0 to 9 do
     digits[i] := False;
+  // Voor de rij r de cel indices bij langsgaan, de indices
+  // voor de rij zijn: { 9*r, 9*r + 1, ..., 9*r + 8 }.
   for i := 9 * RowIndex to 9 * RowIndex + 8 do
   begin
+    // Controleren of het getal al is voorgekomen. Het getal
+    // 0 mag meerdere keren voorkomen.
     if not digits[Grid[i]] or (Grid[i] = 0) then
       digits[Grid[i]] := True
     else
@@ -141,17 +155,24 @@ begin
   end;
 end;
 
+// Met deze functie wordt een kolom gecontroleerd op unieke getallen. Voor
+// elke cel in de kolom wordt er gekeken welk getal al is voorgekomen. Als
+// een getal meerdere keren voorkomt dan is de kolom ongeldig.
 function TForm1.IsValidColumn(ColIndex: Integer): Bool;
 var
   i: Integer;
-  digits: array[0..9] of Bool;
+  digits: array[0..9] of Bool; // Houdt bij welk getal al is voorgekomen.
 begin
   Result := True;
   for i := 0 to 9 do
     digits[i] := False;
+  // Voor de kolom c de cel indices bij langsgaan, de indices
+  // voor de kolom zijn: { c + 0*9, c + 1*9, ..., c + 8*9 }.
   i := ColIndex;
   while i < 81 do
   begin
+    // Controleren of het getal al is voorgekomen. Het getal
+    // 0 mag meerdere keren voorkomen.
     if not digits[Grid[i]] or (Grid[i] = 0) then
       digits[Grid[i]] := True
     else
@@ -163,14 +184,18 @@ end;
 function TForm1.IsValidSquare(SquareIndex: Integer): Bool;
 var
   i, index: Integer;
-  digits: array[0..9] of Bool;
+  digits: array[0..9] of Bool; // Houdt bij welk getal al is voorgekomen.
 begin
   Result := True;
   for i := 0 to 9 do
     digits[i] := False;
   for i := 0 to 8 do
   begin
+    // Voor het vakje s de cel indices bij langsgaan, de indices
+    // voor het vakje worden opgezocht in de Squares array.
     index := Squares[SquareIndex][i];
+    // Controleren of het getal al is voorgekomen. Het getal
+    // 0 mag meerdere keren voorkomen.
     if not digits[Grid[index]] or (Grid[index] = 0) then
       digits[Grid[index]] := True
     else
@@ -178,6 +203,10 @@ begin
   end;
 end;
 
+// Hiermee wordt voor een partiele Sudoku puzzel gekeken of
+// deze nog correct is. Hiervoor wordt elke rij, kolom en
+// vakje gechecked. Indien er ergens een fout ontstaat, dan
+// wordt False teruggeven.
 function TForm1.IsValidPartialSolution;
 var i: Integer;
 begin
@@ -187,17 +216,25 @@ begin
     Result :=     IsValidRow(i)
               and IsValidColumn(i)
               and IsValidSquare(i);
-    if not Result then Exit;
+    if not Result then Exit;  // Stop met controleren als al ongeldig is.
   end;
 end;
 
+// Dit is de backtrack zoekprocedure. Hiermee wordt de puzzel opgelost.
+// Het algoritme begint in cell 0, en gaat de waarden 1..9 proberen in het
+// eerste lege vakje. Als er een partiel geldige oplossing is, dan wordt dit
+// getal gekozen en gaat het algoritme verder met het volgende vakje. Als er
+// toch geen juiste mogelijkheid onstaat, dan backtracked het algoritme.
 procedure TForm1.Search(Cell: Integer);
 var
   i: Integer;
 begin
+  // Animaties weergeven als dit is ingeschakeld.
   if Animate.Checked then
     UpdateGrid;
+  // Applicatie messages processen zodat de applicatie niet blijft hangen.
   Application.ProcessMessages;
+  // Als we bij de laatste cel zijn, dan is er een oplossing gevonden.
   if Cell >= 81 then
   begin
     Log('Solution found!');
@@ -205,43 +242,54 @@ begin
     Stop := True;
     Exit;
   end;
+  // Controleren of de cel leeg is.
   if Grid[Cell] = 0 then
+    // De getallen 1..9 proberen...
     for i := 1 to 9 do
     begin
       if Stop then
         Exit;
-      Grid[Cell] := i;
-      if IsValidPartialSolution then
-        Search(Cell + 1);
+      Grid[Cell] := i;  // Getal zetten.
+      if IsValidPartialSolution then    // Controleren of dit kan...
+        Search(Cell + 1);               // Naar de volgende cel.
       if not Stop then
-        Grid[cell] := 0;
+        Grid[cell] := 0;                // Ingevulde waarde weghalen.
     end
-  else Search(Cell + 1);
+  else Search(Cell + 1); // Cel heeft al een waarde, naar de volgende cel.
 end;
 
+// Button waarmee de het algoritme begint op te lossen.
 procedure TForm1.SolveButtonClick(Sender: TObject);
 begin
-  OutputMemo.Lines.Clear;
+  OutputMemo.Lines.Clear; // Uitvoer leegmaken.
+  // Controleren of de puzzel aan het begin in een geldige staat is.
   if not IsValidPartialSolution then
   begin
     Log('Loaded puzzle is not solvable.');
     Exit;
   end;
+  // UI elementen deactiveren
   SolveButton.Enabled := False;
   Stop := False;
   StopButton.Enabled := True;
   LoadPuzzleButton.Enabled := False;
   Log('Solving . . .   (press stop to abort)');
+  // Beginnen met zoeken
   Search(0);
+  // (Eventuele) oplossing weergeven.
   UpdateGrid;
   StopButton.Enabled := False;
   LoadPuzzleButton.Enabled := True;
+  // Geen oplossing gevonden
   if not Stop then
-    Log('Done solving!');
+    Log('No solution found for this Sudoku! (Or the operation has been aborted.)');
 end;
 
+// Button om het zoeken mee te stoppen.
 procedure TForm1.StopButtonClick(Sender: TObject);
 begin
+  // Stop met zoeken en UI button zodanig activeren
+  // dat een nieuwe puzzel moet worden ingeladen.
   Stop := True;
   StopButton.Enabled := False;
   LoadPuzzleButton.Enabled := True;
@@ -249,19 +297,29 @@ begin
   Log('Reload the puzzle to continue.');
 end;
 
+// Bestand selecteren en bestandpad teruggeven.
 function TForm1.SelectFile(): String;
+var
+  openDialog: TOpenDialog;
 begin
-  Result := 'test.sdku';
+  Result := '';
+  openDialog := TOpenDialog.Create(Self);
+  openDialog.InitialDir := GetCurrentDir;
+  openDialog.Filter := 'Sudoku file|*.sudoku|Text file|*.txt';
+  openDialog.FilterIndex := 2;
+  if openDialog.Execute then
+    Result := openDialog.FileName;
+  openDialog.Free;
 end;
 
+// De inhoud van een bestand uitlezen.
 function TForm1.ReadFile(path: string): String;
 var
   sudokuFile: TextFile;
 begin
   AssignFile(sudokuFile, path);
-  Read(sudokuFile);
-  while not Eof(sudokuFile) do
-    ReadLn(sudokuFile, Result);
+  Reset(sudokuFile);
+  ReadLn(sudokuFile, Result);
   CloseFile(sudokuFile);
 end;
 
